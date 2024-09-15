@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 
     public Animator anim;
 
+    public GameObject[] charSprites;
+    public GameObject charSprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
         if (character.valid) score += 100;
         else score -= 100;
         anim.SetTrigger("Accept");
+        Destroy(charSprite, 0.30f);
         GenerateNewCharacter();
     }
 
@@ -46,6 +50,7 @@ public class GameManager : MonoBehaviour
         if (!character.valid) score += 100;
         else score -= 100;
         anim.SetTrigger("Deny");
+        Destroy(charSprite, 0.30f);
         GenerateNewCharacter();
     }
 
@@ -54,5 +59,13 @@ public class GameManager : MonoBehaviour
         character = new Character();
         ID.fillDetails(character);
         ID.gameObject.SetActive(false);
+        StartCoroutine(instantiation(0.2f));
+    }
+
+    IEnumerator instantiation(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        charSprite = Instantiate(charSprites[Random.Range(0, charSprites.Length)], new Vector3(-12, 0, 0), Quaternion.identity);
+        anim = charSprite.GetComponent<Animator>();
     }
 }
