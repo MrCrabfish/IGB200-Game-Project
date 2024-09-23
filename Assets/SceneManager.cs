@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Scenes : MonoBehaviour
 {
+    public AudioSource popSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,7 @@ public class Scenes : MonoBehaviour
 
     public void StartGame()
     {
+        popSound.Play();
         SceneManager.LoadScene(1);
     }
 }
