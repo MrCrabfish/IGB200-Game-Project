@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public GameObject[] charSprites;
     public GameObject charSprite;
 
+    public AudioSource popSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     public void Accept()
     {
+        popSound.Play();
         if (character.valid) score += 100;
         else score -= 100;
         anim.SetTrigger("Accept");
@@ -47,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void Deny()
     {
+        popSound.Play();
         if (!character.valid) score += 100;
         else score -= 100;
         anim.SetTrigger("Deny");
