@@ -199,8 +199,8 @@ RectTransform:
   m_GameObject: {fileID: 407680537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.87, y: 0.87, z: 0.87}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 423043292}
   - {fileID: 756115295}
@@ -209,7 +209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -25, y: 75}
+  m_AnchoredPosition: {x: 97.4, y: 0.000038146973}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &423043291
@@ -321,8 +321,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -724, y: -220.92}
-  m_SizeDelta: {x: 975.827, y: 640.91}
+  m_AnchoredPosition: {x: -841, y: -265.3}
+  m_SizeDelta: {x: 506.574, y: 332.711}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &507567624
 MonoBehaviour:
@@ -444,8 +444,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1031953949}
   m_HandleRect: {fileID: 1031953948}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.53599524
+  m_Value: 0.9999997
+  m_Size: 0.5359953
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -766,8 +766,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.092, y: 119.47}
-  m_SizeDelta: {x: 1926.184, y: 1619.6}
+  m_AnchoredPosition: {x: 0.0000076293945, y: -28.605982}
+  m_SizeDelta: {x: 2339.994, y: 1012.904}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &737048833
 MonoBehaviour:
@@ -789,7 +789,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b1763b9c908eb4247a1bab39b81a9a2e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf2732e1bc61b4f46b01eadd063d975b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
