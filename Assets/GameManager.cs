@@ -30,12 +30,12 @@ public class GameManager : MonoBehaviour
     public int dayCounter = 1;
 
     private bool gameRunning = true;
+    private bool loss = false;
     // Start is called before the first frame update
     void Start()
     {
         StartDay();
         GenerateNewCharacter();
-        gameRunning = true;
     }
 
     // Update is called once per frame
@@ -46,20 +46,29 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E)) Accept();
             if (Input.GetKeyDown(KeyCode.Q)) Deny();
             scoreText.text = "Score: " + score;
-            if(anim != null) ID.gameObject.SetActive(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+            if (anim != null) ID.gameObject.SetActive(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+
+            if(remaining <= 0)
+            {
+                Debug.Log("Complete");
+                gameRunning = false;
+            }
 
             if (Time.time >= timer + timeLimit)
             {
                 Debug.Log("Day end");
                 fails += remaining;
+                gameRunning = false;
             }
 
-            if(fails > failLimit)
+            if (fails > failLimit)
             {
                 Debug.Log("Game Over");
+                loss = true;
                 gameRunning = false;
             }
         }
+        else if (!loss) StartDay();
     }
 
     public void Accept()
@@ -101,9 +110,12 @@ public class GameManager : MonoBehaviour
 
     public void StartDay()
     {
+        Debug.Log("Day Start");
+        dayCounter += 1;
         timer = Time.time;
         fails = 0;
         score = 0;
         remaining = 10;
+        gameRunning = true;
     }
 }
