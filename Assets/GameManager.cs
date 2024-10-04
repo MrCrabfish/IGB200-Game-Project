@@ -21,13 +21,14 @@ public class GameManager : MonoBehaviour
     public IDScript ID;
 
     public Animator anim;
+    public EquipmentManager equipment;
 
     public GameObject[] charSprites;
     public GameObject charSprite;
 
     public AudioSource popSound;
 
-    public int dayCounter = 1;
+    public int dayCounter = 0;
 
     private bool gameRunning = true;
     private bool loss = false;
@@ -105,6 +106,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         charSprite = Instantiate(charSprites[Random.Range(0, charSprites.Length)], new Vector3(-12, 0, 0), Quaternion.identity);
+        equipment = charSprite.GetComponent<EquipmentManager>();
+        equipment.Summon(character.ID.job, character.invalidReason != "Invalid equipment" || dayCounter < 3);
+        if (dayCounter < 3 && character.invalidReason == "Invalid equipment") character.valid = true;
+
         anim = charSprite.GetComponent<Animator>();
     }
 
@@ -115,7 +120,7 @@ public class GameManager : MonoBehaviour
         timer = Time.time;
         fails = 0;
         score = 0;
-        remaining = 10;
+        remaining = 10 + (2 * dayCounter);
         gameRunning = true;
     }
 }

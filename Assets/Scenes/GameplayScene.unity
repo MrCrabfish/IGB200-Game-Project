@@ -152,13 +152,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  remaining: 0
+  fails: 0
+  failLimit: 5
+  timer: 0
+  timeLimit: 120
   scoreText: {fileID: 2056583842}
   ID: {fileID: 841154671}
   anim: {fileID: 0}
+  equipment: {fileID: 0}
   charSprites:
-  - {fileID: 7408465211784986049, guid: f33f5fccc7c99114780dad73a2494a9f, type: 3}
+  - {fileID: 7408465211784986049, guid: a5bca444736e66a40ba499a0fdefab96, type: 3}
   charSprite: {fileID: 0}
   popSound: {fileID: 1715707893}
+  dayCounter: 1
 --- !u!4 &229066041
 Transform:
   m_ObjectHideFlags: 0
@@ -445,7 +452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1031953948}
   m_Direction: 2
   m_Value: 0.9999997
-  m_Size: 0.5359953
+  m_Size: 0.5359952
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
