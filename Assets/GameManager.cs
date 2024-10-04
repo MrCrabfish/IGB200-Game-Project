@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public int score;
     public int remaining;
     public int fails;
+    public int failLimit = 5;
     public float timer;
     public float timeLimit = 300f;
 
@@ -32,9 +33,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameRunning = true;
         StartDay();
         GenerateNewCharacter();
+        gameRunning = true;
     }
 
     // Update is called once per frame
@@ -45,9 +46,15 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E)) Accept();
             if (Input.GetKeyDown(KeyCode.Q)) Deny();
             scoreText.text = "Score: " + score;
-            ID.gameObject.SetActive(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+            if(anim != null) ID.gameObject.SetActive(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
 
             if (Time.time >= timer + timeLimit)
+            {
+                Debug.Log("Day end");
+                fails += remaining;
+            }
+
+            if(fails > failLimit)
             {
                 Debug.Log("Game Over");
                 gameRunning = false;
@@ -62,6 +69,7 @@ public class GameManager : MonoBehaviour
         else fails++;
         anim.SetTrigger("Accept");
         Destroy(charSprite, 0.30f);
+        remaining -= 1;
         GenerateNewCharacter();
     }
 
@@ -72,6 +80,7 @@ public class GameManager : MonoBehaviour
         else fails++;
         anim.SetTrigger("Deny");
         Destroy(charSprite, 0.30f);
+        remaining -= 1;
         GenerateNewCharacter();
     }
 
