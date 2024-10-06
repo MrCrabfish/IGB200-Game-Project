@@ -35,7 +35,22 @@ public class EquipmentManager : MonoBehaviour
             mouth = true;
             ears = true;
         }
-        else head = false;
+        else
+        {
+            switch (Random.Range(0, 3))
+            {
+                case 0:
+                    head = false;
+                    break;
+                case 1:
+                    mouth = false;
+                    break;
+                case 2:
+                    ears = false;
+                    break;
+                    
+            }
+        }
 
     }
 }

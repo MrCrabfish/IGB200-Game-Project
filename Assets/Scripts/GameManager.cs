@@ -99,10 +99,10 @@ public class GameManager : MonoBehaviour
         character = new Character();
         ID.fillDetails(character);
         ID.gameObject.SetActive(false);
-        StartCoroutine(instantiation(0.2f));
+        StartCoroutine(Instantiation(0.2f));
     }
 
-    IEnumerator instantiation(float seconds)
+    IEnumerator Instantiation(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         charSprite = Instantiate(charSprites[Random.Range(0, charSprites.Length)], new Vector3(-12, 0, 0), Quaternion.identity);
