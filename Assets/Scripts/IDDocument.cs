@@ -28,7 +28,7 @@ public class IDDocument
         }
         else name = n;
         job = "Surveyor";
-        day = Random.Range(0, 28);
+        day = Random.Range(1, 28);
         month = Random.Range(1, 12);
         if (reason != "Invalid Name") name = n;
         if (reason != "Invalid Expiry") year = Random.Range(2025, 2029);
