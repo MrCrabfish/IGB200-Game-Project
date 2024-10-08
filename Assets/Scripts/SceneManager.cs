@@ -22,6 +22,6 @@ public class Scenes : MonoBehaviour
     public void StartGame()
     {
         popSound.Play();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 }
