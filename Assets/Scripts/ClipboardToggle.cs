@@ -4,51 +4,90 @@ using UnityEngine;
 
 public class ClipboardToggle : MonoBehaviour
 {
-    // Boolean to track whether the clipboard is currently visible or not
-    private bool isVisible = true;
+    // Booleans to track the current state
+    private bool isVisible = true; // Clipboard visibility
+    private bool canToggle = false; // Check if toggling is enabled
 
-    // Boolean to track whether the player can toggle the clipboard yet
-    private bool canToggle = false;
+    // References to the speech bubbles and move on button
+    public GameObject Clipboard; // Clipbaord Object
+    public GameObject license; // License object (ID / Worker Speech Bubble)
+    public GameObject buttonsSpeechBubble; // Buttons speech bubble
+    public GameObject idSpeechBubble; // ID speech bubble
+    public GameObject computerSpeechBubble; // Computer speech bubble
+    public GameObject moveOnButton; // Move on button
 
-    // Reference to the License text GameObject
-    public GameObject license; // Assign this in the Inspector
+    // Reference to the AudioSource for the sound effect
+    public AudioSource popSound; // Assign this in the Inspector
+
+    private int state = 0; // Track the progress of spacebar presses
 
     void Start()
     {
-        // Start the coroutine that will allow toggling after 3 seconds
+        // Start coroutine to enable toggling after a 3-second delay
         StartCoroutine(EnableToggleAfterDelay(3f));
 
-        // Initially hide the License GameObject
+        // Initially hide all objects except the clipboard
         license.SetActive(false);
+        buttonsSpeechBubble.SetActive(false);
+        idSpeechBubble.SetActive(false);
+        computerSpeechBubble.SetActive(false);
+        moveOnButton.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Only allow toggling if the 3-second delay has passed
+        // Only allow progressing through the sequence after 3 seconds
         if (canToggle && Input.GetKeyDown(KeyCode.Space))
         {
-            // Toggle the visibility of the clipboard
-            isVisible = !isVisible;
-
-            // Enable or disable the clipboard GameObject
-            gameObject.SetActive(isVisible);
-
-            // Show the License text only if the clipboard is hidden
-            if (!isVisible)
-            {
-                license.SetActive(true);
-            }
+            HandleSpaceBarPress();
         }
+    }
+
+    void HandleSpaceBarPress()
+    {
+        // Play the pop sound when the spacebar is pressed
+        if (popSound != null)
+        {
+            popSound.Play();
+        }
+
+        Debug.Log("Spacebar pressed, current state: " + state); // Debug log for tracking state
+
+        switch (state)
+        {
+            case 0: // Hide the clipboard and show the Buttons speech bubble
+                isVisible = false;
+                Clipboard.SetActive(false); // Hide clipboard
+                buttonsSpeechBubble.SetActive(true); // Show Buttons speech bubble
+                break;
+
+            case 1: // Show the ID/Worker speech bubble
+                buttonsSpeechBubble.SetActive(false); // Hide Buttons speech bubble
+                idSpeechBubble.SetActive(true); // Show ID/Worker speech bubble
+                license.SetActive(true); // Show License at the same time
+                break;
+
+            case 2: // Show the Computer speech bubble
+                idSpeechBubble.SetActive(false); // Hide ID/Worker speech bubble
+                computerSpeechBubble.SetActive(true); // Show Computer speech bubble
+                break;
+
+            case 3: // Hide the Computer speech bubble and show the Move On button
+                computerSpeechBubble.SetActive(false); // Hide Computer speech bubble
+                license.SetActive(false); // Hide License because the letters will not cooporate with me
+                moveOnButton.SetActive(true); // Show Move On button
+                break;
+        }
+
+        // Move to the next state
+        state++;
     }
 
     // Coroutine to enable toggling after a specified delay
     IEnumerator EnableToggleAfterDelay(float delay)
     {
-        // Wait for the specified amount of time (3 seconds)
         yield return new WaitForSeconds(delay);
-
-        // Allow the clipboard to be toggled
-        canToggle = true;
+        canToggle = true; // Allow the spacebar to be pressed after the delay
+        Debug.Log("Toggle enabled"); // Debug log to confirm toggle is enabled
     }
 }
