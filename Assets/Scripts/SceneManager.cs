@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class Scenes : MonoBehaviour
 {
     public AudioSource popSound;
-    private bool tutorialLoaded = false;  // Variable to track if the tutorial has already been loaded
 
     void Update()
     {

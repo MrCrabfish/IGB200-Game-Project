@@ -5,7 +5,7 @@ using UnityEngine;
 public class ClipboardToggle : MonoBehaviour
 {
     // Booleans to track the current state
-    private bool isVisible = true; // Clipboard visibility
+    // Removed the unused isVisible variable
     private bool canToggle = false; // Check if toggling is enabled
 
     // References to the speech bubbles and move on button
@@ -56,7 +56,6 @@ public class ClipboardToggle : MonoBehaviour
         switch (state)
         {
             case 0: // Hide the clipboard and show the Buttons speech bubble
-                isVisible = false;
                 Clipboard.SetActive(false); // Hide clipboard
                 buttonsSpeechBubble.SetActive(true); // Show Buttons speech bubble
                 break;
@@ -74,7 +73,7 @@ public class ClipboardToggle : MonoBehaviour
 
             case 3: // Hide the Computer speech bubble and show the Move On button
                 computerSpeechBubble.SetActive(false); // Hide Computer speech bubble
-                license.SetActive(false); // Hide License because the letters will not cooporate with me
+                license.SetActive(false); // Hide License because the letters will not cooperate with me
                 moveOnButton.SetActive(true); // Show Move On button
                 break;
         }
