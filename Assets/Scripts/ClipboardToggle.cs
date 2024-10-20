@@ -8,7 +8,7 @@ public class ClipboardToggle : MonoBehaviour
     // Removed the unused isVisible variable
     private bool canToggle = false; // Check if toggling is enabled
 
-    // References to the speech bubbles and move on button
+    // References to the speech bubbles, clipboard, license and move on button
     public GameObject Clipboard; // Clipbaord Object
     public GameObject license; // License object (ID / Worker Speech Bubble)
     public GameObject buttonsSpeechBubble; // Buttons speech bubble
