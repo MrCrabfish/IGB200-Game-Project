@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2810410369994548977}
   - component: {fileID: 2801425327324265215}
   m_Layer: 0
-  m_Name: Female 3
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -649,6 +649,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2810410369994548977}
   - {fileID: 2932627648405129113}
   - {fileID: 2150745789909291528}
   - {fileID: 1696784114339597655}
@@ -658,7 +659,6 @@ RectTransform:
   - {fileID: 4243212145382471529}
   - {fileID: 6122490317950273483}
   - {fileID: 4450772880899246028}
-  - {fileID: 2810410369994548977}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

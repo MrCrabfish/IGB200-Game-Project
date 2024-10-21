@@ -608,7 +608,7 @@ GameObject:
   - component: {fileID: 678857603704510890}
   - component: {fileID: 1077633584545036146}
   m_Layer: 0
-  m_Name: Female 2
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
