@@ -593,9 +593,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f11557933cf844fb141e2a8605e5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 2050121474860212998}
-  job: {fileID: 196566722947447569}
-  expiry: {fileID: 8324455242167799711}
+  nameField: {fileID: 8455361087200936748}
+  jobField: {fileID: 3660730888638006312}
+  expiryField: {fileID: 2234788657459965836}
 --- !u!1 &6547876481373423176
 GameObject:
   m_ObjectHideFlags: 0
