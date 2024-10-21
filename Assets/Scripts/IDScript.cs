@@ -4,16 +4,17 @@ using UnityEngine;
 using TMPro;
 
 
+// IDScript for ID Prefabs
 public class IDScript : MonoBehaviour
 {
-    public TMP_Text name;
-    public TMP_Text job;
-    public TMP_Text expiry;
+    public TMP_Text nameField;
+    public TMP_Text jobField;
+    public TMP_Text expiryField;
 
-    public void fillDetails(Character character)
+    public void FillDetails(CharacterDetails character)
     {
-        name.text = character.ID.name;
-        job.text = character.ID.job;
-        expiry.text = character.ID.expiry;
+        nameField.text = character.name;
+        jobField.text = character.job;
+        expiryField.text = character.expiryDate;
     }
 }
