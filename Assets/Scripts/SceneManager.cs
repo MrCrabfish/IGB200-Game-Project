@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Scenes : MonoBehaviour
 {
     public AudioSource popSound;
+    private bool tutorialLoaded = false;  // Variable to track if the tutorial has already been loaded
 
     void Update()
     {
@@ -25,13 +26,13 @@ public class Scenes : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
 
         // Check if we are currently in the tutorial scene
-        if (currentScene.buildIndex == 1) // Assuming the tutorial is Scene 1
+        if (currentScene.buildIndex == 0) // Assuming the title screen is Scene 0
+        {
+            SceneManager.LoadScene(1); // Load the tutorial scene (Scene 1)
+        }
+        else if (currentScene.buildIndex == 1) // Assuming the tutorial is Scene 1
         {
             SceneManager.LoadScene(2); // Load the gameplay scene (Scene 2)
         }
-        else if (currentScene.buildIndex == 0) // Assuming the title screen is Scene 1
-        {
-            SceneManager.LoadScene(1); // Load the tutorial scene (Scene 0)
-        }
     }
-}
+} 

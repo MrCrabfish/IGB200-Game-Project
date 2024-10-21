@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Character
 {
-    public static string[] names = new string[5] {"Elijah Stevenson", "Marianne Farrell", "Grady Cervantes", "Huey Frost", "Imelda Cantu"};
+    public static string[] names = new string[5] { "Elijah Stevenson", "Marianne Farrell", "Grady Cervantes", "Huey Frost", "Imelda Cantu" };
     public string name;
     public bool valid;
-    public static string[] invalidityReasons = new string[3] { "Invalid Name", "Invalid Expiry", "Invalid equipment"};
+    public static string[] invalidityReasons = new string[3] { "Invalid Name", "Invalid Expiry", "Invalid equipment" };
     public string invalidReason = "None";
     public IDDocument ID;
 

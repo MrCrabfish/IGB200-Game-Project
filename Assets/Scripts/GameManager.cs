@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             scoreText.text = "Score: " + score;
             if (anim != null) ID.gameObject.SetActive(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
 
-            if(remaining <= 0)
+            if (remaining <= 0)
             {
                 Debug.Log("Complete");
                 gameRunning = false;

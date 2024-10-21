@@ -8,15 +8,17 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private GameObject hardHat;
     [SerializeField] private GameObject mask;
     [SerializeField] private GameObject headphones;
+    [SerializeField] private GameObject glasses;
 
     public bool head = true;
     public bool mouth = true;
     public bool ears = true;
+    public bool eyes = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -25,6 +27,7 @@ public class EquipmentManager : MonoBehaviour
         hardHat.SetActive(head);
         mask.SetActive(mouth);
         headphones.SetActive(ears);
+        glasses.SetActive(eyes);
     }
 
     public void Summon(string role, bool valid)
@@ -34,6 +37,7 @@ public class EquipmentManager : MonoBehaviour
             head = true;
             mouth = true;
             ears = true;
+            eyes = true;
         }
         else
         {
@@ -48,7 +52,10 @@ public class EquipmentManager : MonoBehaviour
                 case 2:
                     ears = false;
                     break;
-                    
+                case 3:
+                    eyes = false;
+                    break;
+
             }
         }
 

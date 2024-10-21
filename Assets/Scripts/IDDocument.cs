@@ -16,14 +16,15 @@ public class IDDocument
         int year = 0;
         if (!valid)
         {
-            switch (reason) {
+            switch (reason)
+            {
                 case "Invalid Name":
                     name = invalidNames[Random.Range(0, invalidNames.Length)];
                     break;
                 case "Invalid Expiry":
                     year = Random.Range(2000, 2023);
                     break;
-                
+
             }
         }
         else name = n;
