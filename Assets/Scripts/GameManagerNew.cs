@@ -24,6 +24,9 @@ public class GameManagerNew : MonoBehaviour
     private EquipmentManager equipmentManager;
     private IDScript idScript;
 
+    public AudioSource denySound;
+    public AudioSource acceptSound;
+
     private void Start()
     {
         endOfDayClipboard.SetActive(false);
@@ -103,10 +106,12 @@ public class GameManagerNew : MonoBehaviour
         if ((isAccepted && characterDetails.isValid) || (isRejected && !characterDetails.isValid))
         {
             correctCount++;
+            acceptSound.Play();
         }
         else
         {
             incorrectCount++;
+            denySound.Play();
             UpdateFailureCount();
 
             if (incorrectCount > maxFails)
