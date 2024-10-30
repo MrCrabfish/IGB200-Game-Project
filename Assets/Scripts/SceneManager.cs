@@ -16,15 +16,15 @@ public class Scenes : MonoBehaviour
         // Check if the Enter key is pressed
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            // For Scene 0 (title) or Scene 1 (tutorial), allow pressing Enter to move to the next scene
+            // If the current scene is the title or tutorial, pressing Enter moves to the next scene
             if (currentScene.buildIndex == 0 || currentScene.buildIndex == 1)
             {
                 StartGame();
             }
-            // For Scene 2 (Day 1), only allow pressing Enter if the end of day clipboard is revealed
-            else if (currentScene.buildIndex == 2 && endOfDayRevealed)
+            // For Day scenes, allow pressing Enter only if the end of day clipboard is revealed
+            else if (endOfDayRevealed)
             {
-                StartGame();
+                LoadNextDay();
             }
         }
     }
@@ -37,12 +37,12 @@ public class Scenes : MonoBehaviour
     public void StartGame()
     {
         // Play the pop sound effect
-        popSound.Play();
+        if (popSound != null) popSound.Play();
 
         // Get the current active scene
         Scene currentScene = SceneManager.GetActiveScene();
 
-        // Check if we are currently in the title or tutorial scene
+        // Load the appropriate scene based on the current one
         if (currentScene.buildIndex == 0) // Assuming the title screen is Scene 0
         {
             SceneManager.LoadScene(1); // Load the tutorial scene (Scene 1)
@@ -51,9 +51,25 @@ public class Scenes : MonoBehaviour
         {
             SceneManager.LoadScene(2); // Load the Day 1 scene (Scene 2)
         }
-        else if (currentScene.buildIndex == 2) // Assuming Day 1 is Scene 2
+    }
+
+    public void LoadNextDay()
+    {
+        // Get the current active scene
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        // Load the next scene based on the current day
+        if (currentScene.buildIndex == 2) // Day 1
         {
-            SceneManager.LoadScene(0); // Load the title screen again temp
+            SceneManager.LoadScene(3); // Load Day 2 (Scene 3)
+        }
+        else if (currentScene.buildIndex == 3) // Day 2
+        {
+            SceneManager.LoadScene(4); // Load Day 3 (Scene 4)
+        }
+        else if (currentScene.buildIndex == 4) // Day 3
+        {
+            SceneManager.LoadScene(5); // Load Credits scene (Scene 5)
         }
     }
 }

@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// New GameManager Script
 public class GameManagerNew : MonoBehaviour
 {
+    public enum GameDay { Day1, Day2, Day3 }
+    public GameDay currentDay;
+
     public GameObject[] characterPrefabs;
     public GameObject[] idPrefabs;
     public TMP_Text endOfDayReportText;
     public TMP_Text failureCountText;
     public GameObject endOfDayClipboard;
+    public GameObject startOfDayClipboard;
     public int correctCount;
     public int incorrectCount;
     public int maxFails = 5;
-    public GameObject startOfDayClipboard;
-    private int currentCharacterIndex;
     private int totalCharacters;
 
     // Character and ID Instances
@@ -27,16 +28,35 @@ public class GameManagerNew : MonoBehaviour
     public AudioSource denySound;
     public AudioSource acceptSound;
 
+    public Scenes sceneManager; // Reference to Scenes script for scene transitions
+
+    public Transform idSpawnPoint;
+
     private void Start()
     {
         endOfDayClipboard.SetActive(false);
         startOfDayClipboard.SetActive(true);
 
-        totalCharacters = 12; // Set the number of characters to appear during the day
+        ConfigureDaySettings();
         StartCoroutine(StartDay());
     }
 
-    public Transform idSpawnPoint;
+    private void ConfigureDaySettings()
+    {
+        // Configure settings based on the current day
+        switch (currentDay)
+        {
+            case GameDay.Day1:
+                totalCharacters = 12; // Number of characters for Day 1
+                break;
+            case GameDay.Day2:
+                totalCharacters = 12; // Number of characters for Day 2, with equipment check
+                break;
+            case GameDay.Day3:
+                totalCharacters = 18; // More characters for Day 3
+                break;
+        }
+    }
 
     private IEnumerator StartDay()
     {
@@ -44,11 +64,6 @@ public class GameManagerNew : MonoBehaviour
         if (startOfDayClipboard != null)
         {
             startOfDayClipboard.SetActive(false);
-        }
-        // Hide start of day clipboard
-        if (endOfDayClipboard != null)
-        {
-            endOfDayClipboard.SetActive(false);
         }
 
         yield return new WaitForSeconds(1f); // Optional delay before starting the day
@@ -61,7 +76,7 @@ public class GameManagerNew : MonoBehaviour
         for (int i = 0; i < totalCharacters; i++)
         {
             // Select a random character and their respective ID
-            currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
+            int currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
             CharacterDetails characterDetails = new CharacterDetails();
 
             // Instantiate character and ID using the generated details
@@ -73,14 +88,11 @@ public class GameManagerNew : MonoBehaviour
             equipmentManager = currentCharacter.GetComponent<EquipmentManager>();
             idScript.FillDetails(characterDetails);
 
-            if (!characterDetails.isValid)
-            {
-                // Make adjustments for invalid character attributes
-                equipmentManager.Summon(characterDetails.job, characterDetails.validEquipment);
-            }
+            // Set up equipment validity for the character
+            equipmentManager.Summon(characterDetails.job, characterDetails.isEquipmentValid);
 
             // Debugging: Print character details
-            Debug.Log($"Generated Character - Name: {characterDetails.name}, Job: {characterDetails.job}, Expiry Date: {characterDetails.expiryDate}, IsValid: {characterDetails.isValid}, Valid Equipment: {characterDetails.validEquipment}");
+            Debug.Log($"Generated Character - Name: {characterDetails.name}, Job: {characterDetails.job}, Expiry Date: {characterDetails.expiryDate}, Name Valid: {characterDetails.isNameValid}, Expiry Valid: {characterDetails.isExpiryValid}, Equipment Valid: {characterDetails.isEquipmentValid}");
 
             // Wait for player input (accept or reject)
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E));
@@ -95,7 +107,6 @@ public class GameManagerNew : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         ShowEndOfDayReport();
-        endOfDayClipboard.SetActive(true);
     }
 
     private void HandleCharacterEvaluation(CharacterDetails characterDetails)
@@ -103,7 +114,9 @@ public class GameManagerNew : MonoBehaviour
         bool isAccepted = Input.GetKeyDown(KeyCode.E);
         bool isRejected = Input.GetKeyDown(KeyCode.Q);
 
-        if ((isAccepted && characterDetails.isValid) || (isRejected && !characterDetails.isValid))
+        bool isCharacterValid = EvaluateCharacter(characterDetails);
+
+        if ((isAccepted && isCharacterValid) || (isRejected && !isCharacterValid))
         {
             correctCount++;
             acceptSound.Play();
@@ -123,13 +136,41 @@ public class GameManagerNew : MonoBehaviour
         }
 
         // Debugging: Print evaluation details
-        Debug.Log($"Evaluation - Accepted: {isAccepted}, Rejected: {isRejected}, Character Valid: {characterDetails.isValid}, Correct Count: {correctCount}, Incorrect Count: {incorrectCount}");
+        Debug.Log($"Evaluation - Accepted: {isAccepted}, Rejected: {isRejected}, Character Valid: {isCharacterValid}, Correct Count: {correctCount}, Incorrect Count: {incorrectCount}");
+    }
+
+    private bool EvaluateCharacter(CharacterDetails characterDetails)
+    {
+        switch (currentDay)
+        {
+            case GameDay.Day1:
+                // For Day 1, only check name and expiry date
+                return characterDetails.isNameValid && characterDetails.isExpiryValid;
+            case GameDay.Day2:
+                // For Day 2, check name, expiry date, and equipment
+                return characterDetails.isNameValid && characterDetails.isExpiryValid && characterDetails.isEquipmentValid;
+            case GameDay.Day3:
+                // For Day 3, same checks as Day 2 but with more characters
+                return characterDetails.isNameValid && characterDetails.isExpiryValid && characterDetails.isEquipmentValid;
+            default:
+                return false;
+        }
     }
 
     private void ShowEndOfDayReport()
     {
         endOfDayClipboard.SetActive(true);
         endOfDayReportText.text = $"Correct Choices: {correctCount}\nIncorrect Choices: {incorrectCount}";
+
+        // Start waiting for the player to press Enter to proceed to the next scene
+        StartCoroutine(WaitForEndOfDayInput());
+    }
+
+    private IEnumerator WaitForEndOfDayInput()
+    {
+        // Wait for the player to press Enter to proceed to the next scene
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
+        sceneManager.LoadNextDay(); // Trigger the transition to the next scene (Day 2 or Day 3)
     }
 
     private void UpdateFailureCount()
