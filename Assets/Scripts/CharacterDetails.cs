@@ -5,8 +5,14 @@ using UnityEngine;
 // CharacterDetails Class for Handling Character Attributes
 public class CharacterDetails
 {
-    private static string[] validNames = { "Robert Anders", "Rebecca Coal", "Bethany Rose", "Hannah Ziller", "Douge Hoal", "Pete Hallars" };
-    private static string[] invalidNames = { "Shanda Leer", "Michelle Ryan", "Kylie Raisins", "John Walker", "Elijah Moate", "Samuel Scotts" };
+    public enum CharacterType { Male, Female, Dog }
+    public CharacterType characterType;
+
+    private static string[] maleValidNames = { "Robert Anders", "Douge Hoal", "Pete Hallars" };
+    private static string[] femaleValidNames = { "Rebecca Coal", "Bethany Rose", "Hannah Ziller" };
+    private static string[] maleInvalidNames = { "John Walker", "Elijah Moate", "Samuel Scotts" };
+    private static string[] femaleInvalidNames = { "Shanda Leer", "Michelle Ryan", "Kylie Raisins" };
+
     private static string[] jobs = { "Plumber", "Electrician", "Carpenter", "Bricklayer", "Painter", "Heavy Machine OP", "Welder", "Plasterer", "Concreter" };
 
     public string name;
@@ -17,27 +23,56 @@ public class CharacterDetails
     public bool isEquipmentValid;
     public bool isValid;
 
-    public CharacterDetails()
+    public CharacterDetails(GameObject characterPrefab)
     {
-        // Set validity for name, expiry date, and equipment (with higher probability of being valid)
+        // Determine the character type based on the character prefab name or identifier
+        if (characterPrefab.name.Contains("Male"))
+        {
+            characterType = CharacterType.Male;
+        }
+        else if (characterPrefab.name.Contains("Female"))
+        {
+            characterType = CharacterType.Female;
+        }
+        else if (characterPrefab.name.Contains("Dog"))
+        {
+            characterType = CharacterType.Dog;
+        }
+
+        // Assign validity for each attribute independently
         isNameValid = UnityEngine.Random.value > 0.3f;   // 70% chance of being valid
         isExpiryValid = UnityEngine.Random.value > 0.3f; // 70% chance of being valid
         isEquipmentValid = UnityEngine.Random.value > 0.5f; // 50% chance of being valid
 
-        // Assign name validity
-        name = isNameValid ? validNames[UnityEngine.Random.Range(0, validNames.Length)] : invalidNames[UnityEngine.Random.Range(0, invalidNames.Length)];
+        // Assign name based on character type and validity
+        if (characterType == CharacterType.Male)
+        {
+            name = isNameValid ? maleValidNames[UnityEngine.Random.Range(0, maleValidNames.Length)] :
+                                 maleInvalidNames[UnityEngine.Random.Range(0, maleInvalidNames.Length)];
+        }
+        else if (characterType == CharacterType.Female)
+        {
+            name = isNameValid ? femaleValidNames[UnityEngine.Random.Range(0, femaleValidNames.Length)] :
+                                 femaleInvalidNames[UnityEngine.Random.Range(0, femaleInvalidNames.Length)];
+        }
+        else if (characterType == CharacterType.Dog)
+        {
+            // The dog character has a fixed name and doesn't require name validation
+            isNameValid = true;
+            name = "Rex";
+        }
 
-        // Assign expiry validity
+        // Assign expiry date based on validity
         expiryDate = isExpiryValid ? GenerateValidExpiryDate() : GenerateInvalidExpiryDate();
 
-        // Assign job (equipment validity will be determined separately)
+        // Assign job
         job = jobs[UnityEngine.Random.Range(0, jobs.Length)];
 
-        // Determine overall validity
+        // Overall validity: True if name, expiry, and PPE are all valid
         isValid = isNameValid && isExpiryValid && isEquipmentValid;
 
-        // Debugging to check validity assignment
-        Debug.Log($"Character Created - Name: {name}, Job: {job}, Expiry: {expiryDate}, Name Valid: {isNameValid}, Expiry Valid: {isExpiryValid}, Equipment Valid: {isEquipmentValid}");
+        // Debugging
+        Debug.Log($"Character Created - Name: {name}, Character Type: {characterType}, Job: {job}, Expiry: {expiryDate}, Name Valid: {isNameValid}, Expiry Valid: {isExpiryValid}, Equipment Valid: {isEquipmentValid}");
     }
 
     private string GenerateValidExpiryDate()

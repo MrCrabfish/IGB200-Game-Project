@@ -77,11 +77,14 @@ public class GameManagerNew : MonoBehaviour
         {
             // Select a random character and their respective ID
             int currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
-            CharacterDetails characterDetails = new CharacterDetails();
+            GameObject characterPrefab = characterPrefabs[currentCharacterIndex];
 
             // Instantiate character and ID using the generated details
-            currentCharacter = Instantiate(characterPrefabs[currentCharacterIndex], new Vector3(-12, 0, 0), Quaternion.identity);
+            currentCharacter = Instantiate(characterPrefab, new Vector3(-12, 0, 0), Quaternion.identity);
             currentID = Instantiate(idPrefabs[currentCharacterIndex], idSpawnPoint.position, Quaternion.identity);
+
+            // Create CharacterDetails instance with the characterPrefab as an argument
+            CharacterDetails characterDetails = new CharacterDetails(characterPrefab);
 
             // Set character and ID validity
             idScript = currentID.GetComponent<IDScript>();
@@ -108,6 +111,7 @@ public class GameManagerNew : MonoBehaviour
         }
         ShowEndOfDayReport();
     }
+
 
     private void HandleCharacterEvaluation(CharacterDetails characterDetails)
     {
@@ -170,7 +174,7 @@ public class GameManagerNew : MonoBehaviour
     {
         // Wait for the player to press Enter to proceed to the next scene
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
-        sceneManager.LoadNextDay(); // Trigger the transition to the next scene (Day 2 or Day 3)
+        sceneManager.LoadNextDay(); // Trigger the transition to the next scene (Day 2 or Day 3 or credits)
     }
 
     private void UpdateFailureCount()
