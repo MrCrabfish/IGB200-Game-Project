@@ -87,16 +87,14 @@ public class GameManagerNew : MonoBehaviour
             do
             {
                 currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
-            } while (characterPrefabs[currentCharacterIndex].name == "Dog" && JobRequiresMask());
+                characterDetails = new CharacterDetails(characterPrefabs[currentCharacterIndex]);
+            } while (characterDetails.characterType == CharacterDetails.CharacterType.Dog && JobRequiresMask(characterDetails.job));
 
             GameObject characterPrefab = characterPrefabs[currentCharacterIndex];
 
             // Instantiate character and ID using the generated details
             currentCharacter = Instantiate(characterPrefab, new Vector3(-12, 0, 0), Quaternion.identity);
             currentID = Instantiate(idPrefabs[currentCharacterIndex], idSpawnPoint.position, Quaternion.identity);
-
-            // Create CharacterDetails instance with the characterPrefab as an argument
-            characterDetails = new CharacterDetails(characterPrefab);
 
             // Set character and ID validity
             idScript = currentID.GetComponent<IDScript>();
@@ -135,11 +133,12 @@ public class GameManagerNew : MonoBehaviour
         ShowEndOfDayReport(true);
     }
 
-    private bool JobRequiresMask()
+
+    private bool JobRequiresMask(string job)
     {
         // List of jobs that require a mask
         List<string> jobsRequiringMask = new List<string> { "Plumber", "Carpenter", "Painter", "Heavy Machinery Operator", "Welder", "Plasterer", "Concreter" };
-        return jobsRequiringMask.Contains(characterDetails.job);
+        return jobsRequiringMask.Contains(job);
     }
 
     private IEnumerator HandleCharacterEvaluation(CharacterDetails characterDetails)
@@ -195,7 +194,7 @@ public class GameManagerNew : MonoBehaviour
         Destroy(currentID);
 
         // Add a brief delay before spawning the next character
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
     }
 
     private bool EvaluateCharacter(CharacterDetails characterDetails)

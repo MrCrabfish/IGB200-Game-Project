@@ -9,11 +9,12 @@ public class CharacterDetails
     public CharacterType characterType;
 
     private static string[] maleValidNames = { "Robert Anders", "Doug Hoal", "Pete Hallars", "Owen Sparks", "Bill Derks", "Jack Hammer", "Marcus Plumb" };
-    private static string[] femaleValidNames = { "Rebecca Coal", "Bethany Rose", "Hannah Ziller", "Clara Stone" , "Wendy Mason", "Kate Tyler", "Emily Slate" };
+    private static string[] femaleValidNames = { "Rebecca Coal", "Bethany Rose", "Hannah Ziller", "Clara Stone", "Wendy Mason", "Kate Tyler", "Emily Slate" };
     private static string[] maleInvalidNames = { "John Walker", "Elijah Moate", "Samuel Scotts", "Jackson Parker", "Billy Dukes", "Dug Hole", "Robbert Anders" };
     private static string[] femaleInvalidNames = { "Shanda Leer", "Michelle Ryan", "Kylie Raisins", "Hanna Zillar", "Klara Stone", "Bethany Rows", "Carley Mathers" };
 
     private static string[] jobs = { "Plumber", "Electrician", "Carpenter", "Bricklayer", "Painter", "Heavy Machine OP", "Welder", "Plasterer", "Concreter" };
+    private static string[] jobsNoMask = { "Electrician", "Bricklayer" }; // Jobs that do not require a mask
 
     public string name;
     public string job;
@@ -62,11 +63,20 @@ public class CharacterDetails
             name = "Rex";
         }
 
+        // Assign job based on character type
+        if (characterType == CharacterType.Dog)
+        {
+            // Dogs can only be assigned jobs that do not require a mask
+            job = jobsNoMask[UnityEngine.Random.Range(0, jobsNoMask.Length)];
+        }
+        else
+        {
+            // All other characters can be assigned any job
+            job = jobs[UnityEngine.Random.Range(0, jobs.Length)];
+        }
+
         // Assign expiry date based on validity
         expiryDate = isExpiryValid ? GenerateValidExpiryDate() : GenerateInvalidExpiryDate();
-
-        // Assign job
-        job = jobs[UnityEngine.Random.Range(0, jobs.Length)];
 
         // Overall validity: True if name, expiry, and PPE are all valid
         isValid = isNameValid && isExpiryValid && isEquipmentValid;
