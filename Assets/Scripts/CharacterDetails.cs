@@ -8,10 +8,10 @@ public class CharacterDetails
     public enum CharacterType { Male, Female, Dog }
     public CharacterType characterType;
 
-    private static string[] maleValidNames = { "Robert Anders", "Douge Hoal", "Pete Hallars" };
-    private static string[] femaleValidNames = { "Rebecca Coal", "Bethany Rose", "Hannah Ziller" };
-    private static string[] maleInvalidNames = { "John Walker", "Elijah Moate", "Samuel Scotts" };
-    private static string[] femaleInvalidNames = { "Shanda Leer", "Michelle Ryan", "Kylie Raisins" };
+    private static string[] maleValidNames = { "Robert Anders", "Doug Hoal", "Pete Hallars", "Owen Sparks", "Bill Derks", "Jack Hammer", "Marcus Plumb" };
+    private static string[] femaleValidNames = { "Rebecca Coal", "Bethany Rose", "Hannah Ziller", "Clara Stone" , "Wendy Mason", "Kate Tyler", "Emily Slate" };
+    private static string[] maleInvalidNames = { "John Walker", "Elijah Moate", "Samuel Scotts", "Jackson Parker", "Billy Dukes", "Dug Hole", "Robbert Anders" };
+    private static string[] femaleInvalidNames = { "Shanda Leer", "Michelle Ryan", "Kylie Raisins", "Hanna Zillar", "Klara Stone", "Bethany Rows", "Carley Mathers" };
 
     private static string[] jobs = { "Plumber", "Electrician", "Carpenter", "Bricklayer", "Painter", "Heavy Machine OP", "Welder", "Plasterer", "Concreter" };
 
@@ -41,7 +41,7 @@ public class CharacterDetails
 
         // Assign validity for each attribute independently
         isNameValid = UnityEngine.Random.value > 0.3f;   // 70% chance of being valid
-        isExpiryValid = UnityEngine.Random.value > 0.3f; // 70% chance of being valid
+        isExpiryValid = UnityEngine.Random.value > 0.3f; // 60% chance of being valid
         isEquipmentValid = UnityEngine.Random.value > 0.5f; // 50% chance of being valid
 
         // Assign name based on character type and validity

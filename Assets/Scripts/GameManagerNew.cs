@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManagerNew : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class GameManagerNew : MonoBehaviour
     public GameObject[] characterPrefabs;
     public GameObject[] idPrefabs;
     public TMP_Text endOfDayReportText;
+    public TMP_Text additionalEndOfDayText;
     public TMP_Text failureCountText;
     public GameObject endOfDayClipboard;
     public GameObject startOfDayClipboard;
+    public GameObject failureMessage;
     public int correctCount;
     public int incorrectCount;
     public int maxFails = 5;
@@ -36,6 +39,7 @@ public class GameManagerNew : MonoBehaviour
     {
         endOfDayClipboard.SetActive(false);
         startOfDayClipboard.SetActive(true);
+        failureMessage.SetActive(false);
 
         ConfigureDaySettings();
         StartCoroutine(StartDay());
@@ -108,10 +112,18 @@ public class GameManagerNew : MonoBehaviour
 
             // Add a brief delay before spawning the next character
             yield return new WaitForSeconds(0.5f);
+
+            // Check if max fails are reached
+            if (incorrectCount >= maxFails)
+            {
+                Debug.Log("Game Over - Max Fails Reached");
+                ShowEndOfDayReport();
+                ShowFailureMessage();
+                yield break;
+            }
         }
         ShowEndOfDayReport();
     }
-
 
     private void HandleCharacterEvaluation(CharacterDetails characterDetails)
     {
@@ -130,13 +142,6 @@ public class GameManagerNew : MonoBehaviour
             incorrectCount++;
             denySound.Play();
             UpdateFailureCount();
-
-            if (incorrectCount > maxFails)
-            {
-                Debug.Log("Game Over");
-                StopAllCoroutines(); // Stop the game if max failures are reached
-                ShowEndOfDayReport();
-            }
         }
 
         // Debugging: Print evaluation details
@@ -166,15 +171,37 @@ public class GameManagerNew : MonoBehaviour
         endOfDayClipboard.SetActive(true);
         endOfDayReportText.text = $"Correct Choices: {correctCount}\nIncorrect Choices: {incorrectCount}";
 
+        if (incorrectCount >= maxFails)
+        {
+            additionalEndOfDayText.gameObject.SetActive(true);
+        }
+        else
+        {
+            additionalEndOfDayText.gameObject.SetActive(false);
+        }
+
         // Start waiting for the player to press Enter to proceed to the next scene
-        StartCoroutine(WaitForEndOfDayInput());
+        StartCoroutine(WaitForEndOfDayInput(success: true));
     }
 
-    private IEnumerator WaitForEndOfDayInput()
+    private void ShowFailureMessage()
     {
-        // Wait for the player to press Enter to proceed to the next scene
+        failureMessage.SetActive(true);
+        StartCoroutine(WaitForEndOfDayInput(success: false));
+    }
+
+    private IEnumerator WaitForEndOfDayInput(bool success)
+    {
+        // Wait for the player to press Enter to proceed
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
-        sceneManager.LoadNextDay(); // Trigger the transition to the next scene (Day 2 or Day 3 or credits)
+        if (success)
+        {
+            sceneManager.LoadNextDay(); // Trigger the transition to the next scene (Day 2 or Day 3 or credits)
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the current scene if failed
+        }
     }
 
     private void UpdateFailureCount()
