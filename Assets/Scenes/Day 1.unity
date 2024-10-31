@@ -593,8 +593,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
+  m_sharedMaterial: {fileID: -5335752475680728015, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -702,8 +702,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000057078, y: -0.0001233023}
-  m_SizeDelta: {x: 0, y: 1335.8}
+  m_AnchoredPosition: {x: -0.000057078, y: 0}
+  m_SizeDelta: {x: 0, y: 1789.5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &218104266
 MonoBehaviour:
@@ -727,33 +727,36 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Robert Anders
 
-    Doug Hoal
+    Kate Tyler
 
-    Pete Hallars
+    Emily Slate
 
-    Owen Sparks
+    Rex (the dog)
 
     Bill
     Derks
 
     Jack Hammer
 
+    Clara Stone
+
+    Wendy Mason
+
     Marcus Plumb
+
+    Owen
+    Sparks
 
     Rebecca Coal
 
     Bethany Rose
 
-    Hannah
-    Ziller
+    Hannah Ziller
 
-    Clara Stone
+    Doug Hoal
 
-    Wendy Mason
-
-    Kate Tyler
-
-    Emily Slate'
+    Pete
+    Hallars'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
   m_sharedMaterial: {fileID: -5335752475680728015, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
@@ -1675,7 +1678,7 @@ Transform:
   m_GameObject: {fileID: 1085832250}
   serializedVersion: 2
   m_LocalRotation: {x: -0.006522971, y: -0, z: -0, w: 0.9999787}
-  m_LocalPosition: {x: 0, y: -1.03, z: -6.99}
+  m_LocalPosition: {x: 0, y: -1.5, z: -6.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3029,11 +3032,11 @@ MonoBehaviour:
   - {fileID: 2944695291226020398, guid: 2a10cb3593566a945987dd97b965dfb8, type: 3}
   - {fileID: 2944695291226020398, guid: 6cd25fa29bcd6474c91d289f70df46cd, type: 3}
   endOfDayReportText: {fileID: 217503397}
-  additionalEndOfDayText: {fileID: 0}
+  additionalEndOfDayText: {fileID: 2069573288}
   failureCountText: {fileID: 385823955}
   endOfDayClipboard: {fileID: 1495789566}
   startOfDayClipboard: {fileID: 2022768833}
-  failureMessage: {fileID: 0}
+  failureMessage: {fileID: 1551165042}
   correctCount: 0
   incorrectCount: 0
   maxFails: 5
@@ -3472,8 +3475,11 @@ MonoBehaviour:
 
 
 
-    Unfortunately you didn''t do your job quite
-    well enough, when you are ready to retry press "enter"'
+
+
+
+    Unfortunately you didn''t do your job
+    quite well enough, when you are ready to retry press "Enter"'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
   m_sharedMaterial: {fileID: -5335752475680728015, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
@@ -3633,7 +3639,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1779853851}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.48450363
+  m_Size: 0.36166528
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4047,37 +4053,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1416215917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1939152246
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1939152247}
-  m_Layer: 0
-  m_Name: CharacterSpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1939152247
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939152246}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967628342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4426,8 +4401,12 @@ MonoBehaviour:
 
 
 
-    That was your first real day on the job,
-    when you are ready for more press "enter"'
+
+
+
+
+    That was your first real day on the
+    job, when you are ready for more press "enter"'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
   m_sharedMaterial: {fileID: -5335752475680728015, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
@@ -4617,16 +4596,15 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 718432227}
+  - {fileID: 1213968528}
+  - {fileID: 420689099}
+  - {fileID: 213225859}
   - {fileID: 1156578448}
   - {fileID: 1375299885}
   - {fileID: 1500195327}
   - {fileID: 519420032}
-  - {fileID: 1939152247}
   - {fileID: 1085832251}
   - {fileID: 1416215917}
-  - {fileID: 1495789568}
   - {fileID: 2022768836}
-  - {fileID: 213225859}
-  - {fileID: 420689099}
-  - {fileID: 1213968528}
+  - {fileID: 1495789568}
   - {fileID: 1392989281}

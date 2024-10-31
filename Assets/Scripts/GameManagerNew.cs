@@ -35,11 +35,14 @@ public class GameManagerNew : MonoBehaviour
 
     public Transform idSpawnPoint;
 
+    private bool canInput = false;
+    private CharacterDetails characterDetails;
+
     private void Start()
     {
         endOfDayClipboard.SetActive(false);
-        startOfDayClipboard.SetActive(true);
-        failureMessage.SetActive(false);
+        startOfDayClipboard?.SetActive(true);
+        failureMessage?.SetActive(false);
 
         ConfigureDaySettings();
         StartCoroutine(StartDay());
@@ -80,7 +83,12 @@ public class GameManagerNew : MonoBehaviour
         for (int i = 0; i < totalCharacters; i++)
         {
             // Select a random character and their respective ID
-            int currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
+            int currentCharacterIndex;
+            do
+            {
+                currentCharacterIndex = UnityEngine.Random.Range(0, characterPrefabs.Length);
+            } while (characterPrefabs[currentCharacterIndex].name == "Dog" && JobRequiresMask());
+
             GameObject characterPrefab = characterPrefabs[currentCharacterIndex];
 
             // Instantiate character and ID using the generated details
@@ -88,64 +96,106 @@ public class GameManagerNew : MonoBehaviour
             currentID = Instantiate(idPrefabs[currentCharacterIndex], idSpawnPoint.position, Quaternion.identity);
 
             // Create CharacterDetails instance with the characterPrefab as an argument
-            CharacterDetails characterDetails = new CharacterDetails(characterPrefab);
+            characterDetails = new CharacterDetails(characterPrefab);
 
             // Set character and ID validity
             idScript = currentID.GetComponent<IDScript>();
             equipmentManager = currentCharacter.GetComponent<EquipmentManager>();
             idScript.FillDetails(characterDetails);
 
-            // Set up equipment validity for the character
+            // Set up equipment validity for the character before animation starts
             equipmentManager.Summon(characterDetails.job, characterDetails.isEquipmentValid);
 
             // Debugging: Print character details
             Debug.Log($"Generated Character - Name: {characterDetails.name}, Job: {characterDetails.job}, Expiry Date: {characterDetails.expiryDate}, Name Valid: {characterDetails.isNameValid}, Expiry Valid: {characterDetails.isExpiryValid}, Equipment Valid: {characterDetails.isEquipmentValid}");
 
+            // Wait until character reaches "Idle" state before allowing input
+            Animator characterAnimator = currentCharacter.GetComponent<Animator>();
+            if (characterAnimator != null)
+            {
+                yield return new WaitUntil(() => characterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+            }
+
+            canInput = true;
+
             // Wait for player input (accept or reject)
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E));
-            HandleCharacterEvaluation(characterDetails);
+            yield return new WaitUntil(() => (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) && canInput);
+            canInput = false;
 
-            // Add a brief delay before destroying the character and ID
-            yield return new WaitForSeconds(0.5f);
-            Destroy(currentCharacter);
-            Destroy(currentID);
-
-            // Add a brief delay before spawning the next character
-            yield return new WaitForSeconds(0.5f);
+            yield return StartCoroutine(HandleCharacterEvaluation(characterDetails));
 
             // Check if max fails are reached
             if (incorrectCount >= maxFails)
             {
                 Debug.Log("Game Over - Max Fails Reached");
-                ShowEndOfDayReport();
-                ShowFailureMessage();
+                ShowEndOfDayReport(false);
                 yield break;
             }
         }
-        ShowEndOfDayReport();
+        ShowEndOfDayReport(true);
     }
 
-    private void HandleCharacterEvaluation(CharacterDetails characterDetails)
+    private bool JobRequiresMask()
+    {
+        // List of jobs that require a mask
+        List<string> jobsRequiringMask = new List<string> { "Plumber", "Carpenter", "Painter", "Heavy Machinery Operator", "Welder", "Plasterer", "Concreter" };
+        return jobsRequiringMask.Contains(characterDetails.job);
+    }
+
+    private IEnumerator HandleCharacterEvaluation(CharacterDetails characterDetails)
     {
         bool isAccepted = Input.GetKeyDown(KeyCode.E);
         bool isRejected = Input.GetKeyDown(KeyCode.Q);
 
+        Animator characterAnimator = currentCharacter.GetComponent<Animator>();
         bool isCharacterValid = EvaluateCharacter(characterDetails);
+        bool correctDecision = (isAccepted && isCharacterValid) || (isRejected && !isCharacterValid);
 
-        if ((isAccepted && isCharacterValid) || (isRejected && !isCharacterValid))
+        if (correctDecision)
         {
             correctCount++;
-            acceptSound.Play();
         }
         else
         {
             incorrectCount++;
-            denySound.Play();
             UpdateFailureCount();
         }
 
-        // Debugging: Print evaluation details
-        Debug.Log($"Evaluation - Accepted: {isAccepted}, Rejected: {isRejected}, Character Valid: {isCharacterValid}, Correct Count: {correctCount}, Incorrect Count: {incorrectCount}");
+        // Play the appropriate sound based on input
+        if (isAccepted)
+        {
+            acceptSound.Play();
+        }
+        else if (isRejected)
+        {
+            denySound.Play();
+        }
+
+        // Trigger the appropriate animation
+        if (isAccepted && characterAnimator != null)
+        {
+            characterAnimator.SetTrigger("Accept");
+        }
+        else if (isRejected && characterAnimator != null)
+        {
+            characterAnimator.SetTrigger("Deny");
+        }
+
+        // Wait until the current animation has fully played before destroying the character
+        if (characterAnimator != null)
+        {
+            yield return new WaitUntil(() => characterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Accept") &&
+                                               characterAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 ||
+                                               characterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Deny") &&
+                                               characterAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        }
+
+        // Destroy the character and the ID after the animation is done
+        Destroy(currentCharacter);
+        Destroy(currentID);
+
+        // Add a brief delay before spawning the next character
+        yield return new WaitForSeconds(0.5f);
     }
 
     private bool EvaluateCharacter(CharacterDetails characterDetails)
@@ -166,28 +216,24 @@ public class GameManagerNew : MonoBehaviour
         }
     }
 
-    private void ShowEndOfDayReport()
+
+    private void ShowEndOfDayReport(bool success)
     {
         endOfDayClipboard.SetActive(true);
         endOfDayReportText.text = $"Correct Choices: {correctCount}\nIncorrect Choices: {incorrectCount}";
 
-        if (incorrectCount >= maxFails)
+        if (!success)
         {
-            additionalEndOfDayText.gameObject.SetActive(true);
+            failureMessage?.SetActive(true);
+            additionalEndOfDayText?.gameObject.SetActive(false);
         }
         else
         {
-            additionalEndOfDayText.gameObject.SetActive(false);
+            additionalEndOfDayText?.gameObject.SetActive(true);
+            failureMessage?.SetActive(false);
         }
 
-        // Start waiting for the player to press Enter to proceed to the next scene
-        StartCoroutine(WaitForEndOfDayInput(success: true));
-    }
-
-    private void ShowFailureMessage()
-    {
-        failureMessage.SetActive(true);
-        StartCoroutine(WaitForEndOfDayInput(success: false));
+        StartCoroutine(WaitForEndOfDayInput(success));
     }
 
     private IEnumerator WaitForEndOfDayInput(bool success)
