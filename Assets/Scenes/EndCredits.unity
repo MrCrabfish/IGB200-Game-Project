@@ -2269,7 +2269,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2050121474860212998, guid: ee3c5c76b16b89d4682939c8fa13e449, type: 3}
       propertyPath: m_text
-      value: Un-named Hero
+      value: Dylan Yee
       objectReference: {fileID: 0}
     - target: {fileID: 2944695291226020398, guid: ee3c5c76b16b89d4682939c8fa13e449, type: 3}
       propertyPath: m_Name
