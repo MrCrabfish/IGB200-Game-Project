@@ -4189,10 +4189,8 @@ MonoBehaviour:
 
 
 
-
-
-    I hope you enjoyed your second day
-    on the job, not too difficult  I hope. When you are ready for more press "enter"'
+    I hope you enjoyed your second day on
+    the job, not too difficult  I hope. When you are ready for more press "enter"'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
   m_sharedMaterial: {fileID: -5335752475680728015, guid: e3d23677a22c09f489af6c54d6ea6649, type: 2}
