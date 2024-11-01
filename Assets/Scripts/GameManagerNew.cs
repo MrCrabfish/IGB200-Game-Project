@@ -194,7 +194,7 @@ public class GameManagerNew : MonoBehaviour
         Destroy(currentID);
 
         // Add a brief delay before spawning the next character
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
     }
 
     private bool EvaluateCharacter(CharacterDetails characterDetails)

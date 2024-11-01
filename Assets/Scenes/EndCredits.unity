@@ -665,6 +665,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 856957736}
     m_Modifications:
+    - target: {fileID: 2050121474860212998, guid: 6184da7178882dc45b879d6e06062c76, type: 3}
+      propertyPath: m_text
+      value: Hannah Zillmann
+      objectReference: {fileID: 0}
     - target: {fileID: 2944695291226020398, guid: 6184da7178882dc45b879d6e06062c76, type: 3}
       propertyPath: m_Name
       value: Playtester ID 1
